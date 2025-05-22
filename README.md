@@ -1,7 +1,7 @@
 # bootstrap-mj-studio
 css bootstrap designs
 # SHORTCUT
-- # ATTENTION
+- # SCALE UP AND DOWN
     - scale-up-center
     - scale-up-bl
     - scale-up-ver-center
@@ -17,3 +17,19 @@ css bootstrap designs
     - scale-up-hor-left
     - scale-up-bottom
     - scale-up-hor-right
+ 
+    - scale-down-center
+    - scale-down-bl
+    - scale-down-ver-center
+    - scale-down-top
+    - scale-down-left
+    - scale-down-ver-top
+    - scale-down-tr
+    - scale-down-tl
+    - scale-down-ver-bottom
+    - scale-down-right
+    - scale-down-hor-center
+    - scale-down-br
+    - scale-down-hor-left
+    - scale-down-bottom
+    - scale-down-hor-right
