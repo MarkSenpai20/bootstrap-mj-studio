@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Base Styles */
+        :root {
+            --primary-color: #3498db;
+            --primary-dark: #2980b9;
+            --success-color: #2ecc71;
+            --success-dark: #27ae60;
+            --danger-color: #e74c3c;
+            --danger-dark: #c0392b;
+            --warning-color: #f39c12;
+            --warning-dark: #e67e22;
+            --info-color: #1abc9c;
+            --info-dark: #16a085;
+            --secondary-color: #9b59b6;
+            --secondary-dark: #8e44ad;
+            --light-color: #f5f5f5;
+            --dark-color: #333;
+            --gray-color: #95a5a6;
+            --gray-dark: #7f8c8d;
+            --border-color: #ddd;
+            --shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            margin-bottom: 20px;
+            text-align: center;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        header h1 {
+            color: var(--primary-color);
+            font-size: 2.5rem;
+        }
+
+        header h1 i {
+            margin-right: 10px;
+        }
+
+        /* Cards */
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Forms */
+        .form {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        textarea.form-control {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .btn i {
+            margin-right: 8px;
+        }
+
+        .btn.primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn.primary:hover {
+            background-color: var(--primary-dark);
+        }
+
+        .btn.success {
+            background-color: var(--success-color);
+            color: white;
+        }
+
+        .btn.success:hover {
+            background-color: var(--success-dark);
+        }
+
+        .btn.danger {
+            background-color: var(--danger-color);
+            color: white;
+        }
+
+        .btn.danger:hover {
+            background-color: var(--danger-dark);
+        }
+
+        .btn.info {
+            background-color: var(--info-color);
+            color: white;
+        }
+
+        .btn.info:hover {
+            background-color: var(--info-dark);
+        }
+
+        .btn.secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .btn.secondary:hover {
+            background-color: var(--secondary-dark);
+        }
+
+        .btn:disabled {
+            background-color: var(--gray-color);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        /* Search Box */
+        .search-box {
+            margin-bottom: 20px;
+        }
+
+        .search-box input {
+            padding-left: 40px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>');
+            background-repeat: no-repeat;
+            background-position: 15px center;
+        }
+
+        /* Products Table */
+        .products-table-container {
+            overflow-x: auto;
+            margin-top: 15px;
+        }
+
+        .products-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .products-table th,
+        .products-table td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .products-table th {
+            background-color: var(--light-color);
+            font-weight: 600;
+        }
+
+        .products-table tr:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+        }
+
+        .products-table .action-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+        .products-table .action-buttons button {
+            padding: 5px 10px;
+            font-size: 0.8rem;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+            animation: modalFadeIn 0.3s;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            color: var(--dark-color);
+        }
+
+        .btn-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--gray-color);
+        }
+
+        .btn-close:hover {
+            color: var(--dark-color);
+        }
+
+        .modal-body {
+            padding: 20px;
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 15px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            padding: 15px 25px;
+            background-color: var(--dark-color);
+            color: white;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            z-index: 1000;
+            transition: all 0.3s;
+            max-width: 350px;
+        }
+
+        .toast.success {
+            background-color: var(--success-color);
+        }
+
+        .toast.error {
+            background-color: var(--danger-color);
+        }
+
+        .toast.warning {
+            background-color: var(--warning-color);
+        }
+
+        .toast.info {
+            background-color: var(--info-color);
+        }
+
+        /* Utilities */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* Animations */
+        @keyframes modalFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Database Status */
+        .db-status {
+            background-color: var(--info-color);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .db-status.loading {
+            background-color: var(--warning-color);
+        }
+
+        .db-status.error {
+            background-color: var(--danger-color);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .products-table .action-buttons {
+                flex-direction: column;
+            }
+            
+            .modal-content {
+                width: 95%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-box"></i> Product Management System</h1>
+        </header>
+
+        <!-- Database Status -->
+        <div id="db-status" class="db-status loading">
+            <i class="fas fa-spinner fa-spin"></i> Initializing database...
+        </div>
+
+        <!-- Manage Products Section -->
+        <section id="manage-products-section">
+            <div class="card">
+                <div class="search-box">
+                    <input type="text" id="manage-product-search" class="form-control" placeholder="Search products by name or barcode...">
+                </div>
+                <div class="list-container">
+                    <h3>Products</h3>
+                    <div class="products-table-container">
+                        <table class="products-table">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Barcode</th>
+                                    <th>Name</th>
+                                    <th>Price</th>
+                                    <th>Description</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="products-table-body">
+                                <tr>
+                                    <td colspan="6" class="text-center">Loading products...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button id="add-product-btn" class="btn success"><i class="fas fa-plus"></i> Add New Product</button>
+                    <button id="import-sql-btn" class="btn warning"><i class="fas fa-upload"></i> Import SQL</button>
+                    <button id="export-sql-btn" class="btn info"><i class="fas fa-download"></i> Export SQL</button>
+                    <button id="clear-db-btn" class="btn danger"><i class="fas fa-trash"></i> Clear Database</button>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div id="edit-product-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Add New Product</h3>
+                <button class="btn-close" id="close-edit-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form">
+                    <div class="form-group">
+                        <label for="edit-product-barcode">Barcode (optional):</label>
+                        <input type="text" id="edit-product-barcode" class="form-control" placeholder="Enter barcode">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-product-name">Product Name:</label>
+                        <input type="text" id="edit-product-name" class="form-control" required placeholder="Enter product name">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-product-price">Price:</label>
+                        <input type="number" id="edit-product-price" class="form-control" step="0.01" min="0" placeholder="Enter price">
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-product-description">Description (optional):</label>
+                        <textarea id="edit-product-description" class="form-control" placeholder="Enter description"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn success" id="save-product"><i class="fas fa-save"></i> Save Product</button>
+                <button class="btn secondary" id="cancel-edit">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import SQL Modal -->
+    <div id="import-sql-modal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Import SQL File</h3>
+                <button class="btn-close" id="close-import-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="import-file-display">Select SQL file to import:</label>
+                    <input type="text" id="import-file-display" class="form-control" readonly placeholder="No file selected">
+                    <button type="button" id="browse-file-btn" class="btn secondary" style="margin-top: 10px;">
+                        <i class="fas fa-folder-open"></i> Browse Files
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label>Import options:</label>
+                    <div style="margin-top: 10px;">
+                        <label style="display: flex; align-items: center; margin-bottom: 10px; font-weight: normal;">
+                            <input type="radio" name="import-mode" value="merge" checked style="margin-right: 10px;"> 
+                            Merge with existing data (keep existing products)
+                        </label>
+                        <label style="display: flex; align-items: center; font-weight: normal;">
+                            <input type="radio" name="import-mode" value="replace" style="margin-right: 10px;"> 
+                            Replace existing data (clear database first)
+                        </label>
+                    </div>
+                </div>
+                <div id="import-preview" class="form-group" style="display: none;">
+                    <label>Preview:</label>
+                    <div id="import-preview-content" style="background-color: #f5f5f5; padding: 10px; border-radius: 4px; max-height: 200px; overflow-y: auto; font-family: monospace; font-size: 0.9em;"></div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn success" id="execute-import" disabled><i class="fas fa-upload"></i> Import Data</button>
+                <button class="btn secondary" id="cancel-import">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast hidden"></div>
+
+    <!-- Hidden file input for SQL import -->
+    <input type="file" id="sql-file-input" accept=".sql,.txt" style="display: none;">
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/sql-wasm.js"></script>
+    <script>
+        // Global variables
+        let db = null;
+        let currentProductId = null;
+
+        // Initialize SQL.js and database
+        async function initDatabase() {
+            try {
+                const sqlPromise = initSqlJs({
+                    locateFile: file => `https://cdnjs.cloudflare.com/ajax/libs/sql.js/1.8.0/${file}`
+                });
+                
+                const SQL = await sqlPromise;
+                
+                // Check if database exists in localStorage
+                const savedDb = localStorage.getItem('productDatabase');
+                if (savedDb) {
+                    const uint8Array = new Uint8Array(JSON.parse(savedDb));
+                    db = new SQL.Database(uint8Array);
+                } else {
+                    db = new SQL.Database();
+                    createTables();
+                    insertSampleData();
+                }
+                
+                updateDbStatus('ready', 'Database ready');
+                loadProducts();
+            } catch (error) {
+                console.error('Database initialization error:', error);
+                updateDbStatus('error', 'Database initialization failed');
+            }
+        }
+
+        // Create database tables
+        function createTables() {
+            const createProductsTable = `
+                CREATE TABLE IF NOT EXISTS products (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    barcode TEXT UNIQUE,
+                    name TEXT NOT NULL,
+                    price REAL,
+                    description TEXT,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+                    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                );
+            `;
+            
+            db.run(createProductsTable);
+            saveDatabase();
+        }
+
+        // Insert sample data
+        function insertSampleData() {
+            const sampleProducts = [
+                { barcode: '4800194151000', name: 'Oishi Prawn Crackers', price: 1.99, description: 'Crispy prawn-flavored crackers' },
+                { barcode: '4800194152000', name: 'Oishi Potato Chips', price: 2.49, description: 'Classic potato chips' },
+                { barcode: '5449000000996', name: 'Coca-Cola', price: 1.29, description: 'Classic cola drink' },
+                { barcode: '7622300335823', name: 'Oreo Cookies', price: 3.99, description: 'Chocolate sandwich cookies' },
+                { barcode: '24000141822', name: 'Del Monte Corn', price: 1.79, description: 'Canned sweet corn' }
+            ];
+
+            const insertStmt = db.prepare(`
+                INSERT INTO products (barcode, name, price, description) 
+                VALUES (?, ?, ?, ?)
+            `);
+
+            sampleProducts.forEach(product => {
+                insertStmt.run([product.barcode, product.name, product.price, product.description]);
+            });
+
+            insertStmt.free();
+            saveDatabase();
+        }
+
+        // Save database to localStorage
+        function saveDatabase() {
+            if (db) {
+                const data = db.export();
+                localStorage.setItem('productDatabase', JSON.stringify(Array.from(data)));
+            }
+        }
+
+        // Update database status
+        function updateDbStatus(status, message) {
+            const statusEl = document.getElementById('db-status');
+            statusEl.className = `db-status ${status}`;
+            
+            let icon = 'fas fa-database';
+            if (status === 'loading') icon = 'fas fa-spinner fa-spin';
+            if (status === 'error') icon = 'fas fa-exclamation-triangle';
+            if (status === 'ready') icon = 'fas fa-check-circle';
+            
+            statusEl.innerHTML = `<i class="${icon}"></i> ${message}`;
+        }
+
+        // Load and display products
+        function loadProducts() {
+            if (!db) return;
+
+            try {
+                const stmt = db.prepare('SELECT * FROM products ORDER BY created_at DESC, id DESC');
+                const products = [];
+                
+                while (stmt.step()) {
+                    const row = stmt.getAsObject();
+                    products.push(row);
+                }
+                stmt.free();
+
+                displayProducts(products);
+            } catch (error) {
+                console.error('Error loading products:', error);
+                showToast('Error loading products', 'error');
+            }
+        }
+
+        // Display products in table
+        function displayProducts(products) {
+            const tableBody = document.getElementById('products-table-body');
+            tableBody.innerHTML = '';
+
+            if (products.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="text-center">No products found.</td>
+                    </tr>
+                `;
+                return;
+            }
+
+            products.forEach(product => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${product.id}</td>
+                    <td>${product.barcode || 'N/A'}</td>
+                    <td>${product.name}</td>
+                    <td>${formatPrice(product.price)}</td>
+                    <td>${product.description || 'N/A'}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn primary edit-product-btn" data-id="${product.id}">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <button class="btn danger delete-product" data-id="${product.id}">
+                                <i class="fas fa-trash"></i> Delete
+                            </button>
+                        </div>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Search products
+        function searchProducts(searchTerm) {
+            if (!db) return;
+
+            try {
+                const stmt = db.prepare(`
+                    SELECT * FROM products 
+                    WHERE name LIKE ? OR barcode LIKE ? 
+                    ORDER BY created_at DESC, id DESC
+                `);
+                
+                const searchPattern = `%${searchTerm}%`;
+                const products = [];
+                
+                stmt.bind([searchPattern, searchPattern]);
+                while (stmt.step()) {
+                    const row = stmt.getAsObject();
+                    products.push(row);
+                }
+                stmt.free();
+
+                displayProducts(products);
+            } catch (error) {
+                console.error('Error searching products:', error);
+                showToast('Error searching products', 'error');
+            }
+        }
+
+        // Add or update product
+        function saveProduct(productData) {
+            if (!db) return;
+
+            try {
+                if (currentProductId) {
+                    // Update existing product
+                    const stmt = db.prepare(`
+                        UPDATE products 
+                        SET barcode = ?, name = ?, price = ?, description = ?, updated_at = CURRENT_TIMESTAMP
+                        WHERE id = ?
+                    `);
+                    stmt.run([
+                        productData.barcode || null,
+                        productData.name,
+                        productData.price || null,
+                        productData.description || null,
+                        currentProductId
+                    ]);
+                    stmt.free();
+                    showToast('Product updated successfully', 'success');
+                } else {
+                    // Add new product
+                    const stmt = db.prepare(`
+                        INSERT INTO products (barcode, name, price, description) 
+                        VALUES (?, ?, ?, ?)
+                    `);
+                    stmt.run([
+                        productData.barcode || null,
+                        productData.name,
+                        productData.price || null,
+                        productData.description || null
+                    ]);
+                    stmt.free();
+                    showToast('Product added successfully', 'success');
+                }
+
+                saveDatabase();
+                loadProducts();
+                closeModal();
+            } catch (error) {
+                console.error('Error saving product:', error);
+                if (error.message.includes('UNIQUE constraint failed')) {
+                    showToast('A product with this barcode already exists', 'error');
+                } else {
+                    showToast('Error saving product', 'error');
+                }
+            }
+        }
+
+        // Delete product
+        function deleteProduct(productId) {
+            if (!db) return;
+
+            try {
+                const stmt = db.prepare('DELETE FROM products WHERE id = ?');
+                stmt.run([productId]);
+                stmt.free();
+
+                saveDatabase();
+                loadProducts();
+                showToast('Product deleted successfully', 'success');
+            } catch (error) {
+                console.error('Error deleting product:', error);
+                showToast('Error deleting product', 'error');
+            }
+        }
+
+        // Get product by ID
+        function getProductById(productId) {
+            if (!db) return null;
+
+            try {
+                const stmt = db.prepare('SELECT * FROM products WHERE id = ?');
+                stmt.bind([productId]);
+                
+                let product = null;
+                if (stmt.step()) {
+                    product = stmt.getAsObject();
+                }
+                stmt.free();
+                
+                return product;
+            } catch (error) {
+                console.error('Error getting product:', error);
+                return null;
+            }
+        }
+
+        // Export database as SQL
+        function exportSQL() {
+            if (!db) return;
+
+            try {
+                const stmt = db.prepare('SELECT * FROM products ORDER BY id');
+                let sqlContent = '-- Product Management System Database Export\n';
+                sqlContent += '-- Generated on: ' + new Date().toISOString() + '\n\n';
+                
+                sqlContent += `CREATE TABLE IF NOT EXISTS products (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    barcode TEXT UNIQUE,
+    name TEXT NOT NULL,
+    price REAL,
+    description TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);\n\n`;
+
+                const products = [];
+                while (stmt.step()) {
+                    const row = stmt.getAsObject();
+                    products.push(row);
+                }
+                stmt.free();
+
+                if (products.length > 0) {
+                    sqlContent += 'INSERT INTO products (id, barcode, name, price, description, created_at, updated_at) VALUES\n';
+                    
+                    const values = products.map(product => {
+                        const barcode = product.barcode ? `'${product.barcode.replace(/'/g, "''")}'` : 'NULL';
+                        const name = `'${product.name.replace(/'/g, "''")}'`;
+                        const price = product.price || 'NULL';
+                        const description = product.description ? `'${product.description.replace(/'/g, "''")}'` : 'NULL';
+                        const createdAt = product.created_at ? `'${product.created_at}'` : 'CURRENT_TIMESTAMP';
+                        const updatedAt = product.updated_at ? `'${product.updated_at}'` : 'CURRENT_TIMESTAMP';
+                        
+                        return `(${product.id}, ${barcode}, ${name}, ${price}, ${description}, ${createdAt}, ${updatedAt})`;
+                    });
+                    
+                    sqlContent += values.join(',\n') + ';\n';
+                }
+
+                // Create and download file
+                const blob = new Blob([sqlContent], { type: 'text/sql' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `products_export_${new Date().toISOString().slice(0, 10)}.sql`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showToast('SQL export completed', 'success');
+            } catch (error) {
+                console.error('Error exporting SQL:', error);
+                showToast('Error exporting SQL', 'error');
+            }
+        }
+
+        // Clear database
+        function clearDatabase() {
+            if (!db) return;
+
+            if (confirm('Are you sure you want to clear all products? This action cannot be undone.')) {
+                try {
+                    db.run('DELETE FROM products');
+                    saveDatabase();
+                    loadProducts();
+                    showToast('Database cleared successfully', 'success');
+                } catch (error) {
+                    console.error('Error clearing database:', error);
+                    showToast('Error clearing database', 'error');
+                }
+            }
+        }
+
+        // Utility functions
+        function formatPrice(price) {
+            return price ? `$${parseFloat(price).toFixed(2)}` : 'N/A';
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.remove('hidden');
+
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 3000);
+        }
+
+        function openModal(title, productId = null) {
+            currentProductId = productId;
+            document.getElementById('modal-title').textContent = title;
+            
+            if (productId) {
+                const product = getProductById(productId);
+                if (product) {
+                    document.getElementById('edit-product-barcode').value = product.barcode || '';
+                    document.getElementById('edit-product-name').value = product.name;
+                    document.getElementById('edit-product-price').value = product.price || '';
+                    document.getElementById('edit-product-description').value = product.description || '';
+                }
+            } else {
+                // Clear form for new product
+                document.getElementById('edit-product-barcode').value = '';
+                document.getElementById('edit-product-name').value = '';
+                document.getElementById('edit-product-price').value = '';
+                document.getElementById('edit-product-description').value = '';
+            }
+            
+            document.getElementById('edit-product-modal').classList.remove('hidden');
+        }
+
+        function closeModal() {
+            document.getElementById('edit-product-modal').classList.add('hidden');
+            currentProductId = null;
+        }
+
+        // Import SQL file
+        function importSQL(sqlContent, mode) {
+            if (!db) return;
+
+            try {
+                if (mode === 'replace') {
+                    // Clear existing data
+                    db.run('DELETE FROM products');
+                }
+
+                // Split SQL content into individual statements
+                const statements = sqlContent
+                    .split(';')
+                    .map(stmt => stmt.trim())
+                    .filter(stmt => stmt.length > 0 && !stmt.startsWith('--') && !stmt.toLowerCase().startsWith('create table'));
+
+                let importedCount = 0;
+                let errorCount = 0;
+
+                statements.forEach(statement => {
+                    try {
+                        if (statement.toLowerCase().includes('insert into products')) {
+                            db.run(statement);
+                            importedCount++;
+                        }
+                    } catch (error) {
+                        console.warn('Skipped statement due to error:', error.message);
+                        errorCount++;
+                    }
+                });
+
+                saveDatabase();
+                loadProducts();
+                closeImportModal();
+
+                if (importedCount > 0) {
+                    showToast(`Successfully imported ${importedCount} products${errorCount > 0 ? ` (${errorCount} errors)` : ''}`, 'success');
+                } else {
+                    showToast('No valid product data found in the SQL file', 'warning');
+                }
+            } catch (error) {
+                console.error('Error importing SQL:', error);
+                showToast('Error importing SQL file', 'error');
+            }
+        }
+
+        // Parse and preview SQL file
+        function parseAndPreviewSQL(file) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const content = e.target.result;
+                
+                // Show preview
+                const previewDiv = document.getElementById('import-preview');
+                const previewContent = document.getElementById('import-preview-content');
+                
+                // Show first 500 characters as preview
+                const preview = content.length > 500 ? content.substring(0, 500) + '...' : content;
+                previewContent.textContent = preview;
+                previewDiv.style.display = 'block';
+                
+                // Enable import button
+                document.getElementById('execute-import').disabled = false;
+                document.getElementById('execute-import').onclick = function() {
+                    const mode = document.querySelector('input[name="import-mode"]:checked').value;
+                    importSQL(content, mode);
+                };
+            };
+            
+            reader.onerror = function() {
+                showToast('Error reading file', 'error');
+            };
+            
+            reader.readAsText(file);
+        }
+
+        // Open import modal
+        function openImportModal() {
+            document.getElementById('import-sql-modal').classList.remove('hidden');
+            document.getElementById('import-file-display').value = '';
+            document.getElementById('import-preview').style.display = 'none';
+            document.getElementById('execute-import').disabled = true;
+        }
+
+        // Close import modal
+        function closeImportModal() {
+            document.getElementById('import-sql-modal').classList.add('hidden');
+            document.getElementById('sql-file-input').value = '';
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize database
+            initDatabase();
+
+            // Search functionality
+            document.getElementById('manage-product-search').addEventListener('input', function() {
+                const searchTerm = this.value.trim();
+                if (searchTerm === '') {
+                    loadProducts();
+                } else {
+                    searchProducts(searchTerm);
+                }
+            });
+
+            // Add product button
+            document.getElementById('add-product-btn').addEventListener('click', function() {
+                openModal('Add New Product');
+            });
+
+            // Import SQL button
+            document.getElementById('import-sql-btn').addEventListener('click', openImportModal);
+
+            // Browse file button
+            document.getElementById('browse-file-btn').addEventListener('click', function() {
+                document.getElementById('sql-file-input').click();
+            });
+
+            // File input change
+            document.getElementById('sql-file-input').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    document.getElementById('import-file-display').value = file.name;
+                    parseAndPreviewSQL(file);
+                }
+            });
+
+            // Export SQL button
+            document.getElementById('export-sql-btn').addEventListener('click', exportSQL);
+
+            // Clear database button
+            document.getElementById('clear-db-btn').addEventListener('click', clearDatabase);
+
+            // Modal close buttons
+            document.getElementById('close-edit-modal').addEventListener('click', closeModal);
+            document.getElementById('cancel-edit').addEventListener('click', closeModal);
+
+            // Import modal close buttons
+            document.getElementById('close-import-modal').addEventListener('click', closeImportModal);
+            document.getElementById('cancel-import').addEventListener('click', closeImportModal);
+
+            // Save product button
+            document.getElementById('save-product').addEventListener('click', function() {
+                const barcode = document.getElementById('edit-product-barcode').value.trim();
+                const name = document.getElementById('edit-product-name').value.trim();
+                const price = document.getElementById('edit-product-price').value.trim();
+                const description = document.getElementById('edit-product-description').value.trim();
+
+                if (!name) {
+                    showToast('Please enter a product name', 'warning');
+                    return;
+                }
+
+                const productData = {
+                    barcode: barcode || null,
+                    name: name,
+                    price: price ? parseFloat(price) : null,
+                    description: description || null
+                };
+
+                saveProduct(productData);
+            });
+
+            // Event delegation for edit and delete buttons
+            document.getElementById('products-table-body').addEventListener('click', function(e) {
+                if (e.target.closest('.edit-product-btn')) {
+                    const productId = parseInt(e.target.closest('.edit-product-btn').dataset.id);
+                    openModal('Edit Product', productId);
+                } else if (e.target.closest('.delete-product')) {
+                    const productId = parseInt(e.target.closest('.delete-product').dataset.id);
+                    const product = getProductById(productId);
+                    if (product && confirm(`Are you sure you want to delete "${product.name}"?`)) {
+                        deleteProduct(productId);
+                    }
+                }
+            });
+
+            // Close modal when clicking outside
+            document.getElementById('edit-product-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+
+            // Close import modal when clicking outside
+            document.getElementById('import-sql-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeImportModal();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
